@@ -17,9 +17,7 @@ int readsize = 1024;
 
 int main()
 {
-	char* result = addSpacing("this is a string", 5, ".");
-	printf(result);
-/*	FILE *tmpFile = fopen("tmp.txt", "w");
+	FILE *tmpFile = fopen("tmp.txt", "w");
 	FILE *inputFile;
 	int lines;
 	char spacer[readsize];
@@ -33,7 +31,7 @@ int main()
 	fixSpacing(inputFile, spacer);
 	
 	fclose(inputFile);
-	*/
+	
 	return 0;
 }
 
@@ -73,21 +71,26 @@ int removeLeadingSpace(FILE *inputFile, FILE *tmpFile)
 int fixSpacing(FILE *inputFile, char *spacer)
 {
 	char tmp[readsize];
-	char* spaced = (char*)malloc(sizeof(char)*readsize);
 	int indents = 0;
+	int trailing = 0;
 	do
 	{
 		fgets(tmp, readsize, inputFile);
-		spaced = addSpacing(tmp, indents, spacer);
+		trailing = indents;
 		
 		if(startsWith("FOR", tmp) || startsWith("IF", tmp))
 		{
-			
+			indents++;
 		}
+		
+		if(startsWith("NEXT", tmp) || startsWith("ENDIF", tmp))
+		{
+			indents--;
+		}
+		addSpacing(tmp, trailing, spacer);
 	}
 	while(!feof(inputFile));
 	
-	free(spaced);
 	return 0;
 }
 
@@ -111,14 +114,18 @@ int startsWith(const char *prefix, const char *str)
 
 char* addSpacing(char* input, int indents, char* spacer)
 {
-	char spaceBlock[readsize] = "";
+	char spaceBlock[readsize];
+	char tmp[readsize];
+	strcpy(tmp, spacer);
 	int i;
-	for(i=0; i < indents; i++)
+	for(i=0; i<indents; i++)
 	{
-		snprintf(spaceBlock, readsize, "%s%s", spaceBlock, spacer);
+		strcat(spaceBlock, tmp);
 	}
-	
-	char rv[readsize];
-	snprintf(rv, readsize, "%s%s", spaceBlock, readsize);
-	return rv;
+	strcpy(tmp, input);
+	strcat(spaceBlock, tmp);
+
+
+	strcpy(input, spaceBlock);
+	return input;
 }
