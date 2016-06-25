@@ -7,28 +7,33 @@
 
 int getNumLines(FILE *inputFile);
 int getSpacer(FILE *inputFile, char* spacer);
-int removeLeadingSpaces(FILE *inputFile);
+int removeLeadingSpace(FILE *inputFile, FILE* tmpFile);
 int fixSpacing(FILE *inputFile, char *spacer);
 char* trimString(char* string);
+int startsWith(const char *prefix, const char *str);
+char* addSpacing(char* input, int indents, char* spacer);
 
 int readsize = 1024;
 
 int main()
 {
+	char* result = addSpacing("this is a string", 5, ".");
+	printf(result);
+/*	FILE *tmpFile = fopen("tmp.txt", "w");
 	FILE *inputFile;
 	int lines;
-	char *spacer;
+	char spacer[readsize];
 	
 	inputFile = fopen("unformattedBasic.txt","r");
+	tmpFile = fopen("tmp.txt", "w");
 	
 	lines = getNumLines(inputFile);
 	getSpacer(inputFile, spacer);					//not working
-	
-	removeLeadingSpace(inputFile);
+	removeLeadingSpace(inputFile, tmpFile);
 	fixSpacing(inputFile, spacer);
 	
 	fclose(inputFile);
-	
+	*/
 	return 0;
 }
 
@@ -49,9 +54,8 @@ int getSpacer(FILE *inputFile, char* spacer)
 	return 0;
 }
 
-int removeLeadingSpace(FILE *inputFile)
+int removeLeadingSpace(FILE *inputFile, FILE *tmpFile)
 {
-	FILE *outputFile = fopen("tmp.txt", "w");
 	char tmp[readsize];
 	char* trimmed;
 	
@@ -59,7 +63,7 @@ int removeLeadingSpace(FILE *inputFile)
 	{
 		fgets(tmp, readsize, inputFile);
 		trimmed = trimString(tmp);
-		fputs(trimmed, outputFile);
+		fputs(trimmed, tmpFile);
 	}
 	while(!feof(inputFile));
 	
@@ -68,6 +72,22 @@ int removeLeadingSpace(FILE *inputFile)
 
 int fixSpacing(FILE *inputFile, char *spacer)
 {
+	char tmp[readsize];
+	char* spaced = (char*)malloc(sizeof(char)*readsize);
+	int indents = 0;
+	do
+	{
+		fgets(tmp, readsize, inputFile);
+		spaced = addSpacing(tmp, indents, spacer);
+		
+		if(startsWith("FOR", tmp) || startsWith("IF", tmp))
+		{
+			
+		}
+	}
+	while(!feof(inputFile));
+	
+	free(spaced);
 	return 0;
 }
 
@@ -82,4 +102,23 @@ char* trimString(char* string)
 	}
 	
 	return string;
+}
+
+int startsWith(const char *prefix, const char *str)
+{
+    return strncmp(prefix, str, strlen(prefix)) == 0;
+}
+
+char* addSpacing(char* input, int indents, char* spacer)
+{
+	char spaceBlock[readsize] = "";
+	int i;
+	for(i=0; i < indents; i++)
+	{
+		snprintf(spaceBlock, readsize, "%s%s", spaceBlock, spacer);
+	}
+	
+	char rv[readsize];
+	snprintf(rv, readsize, "%s%s", spaceBlock, readsize);
+	return rv;
 }
