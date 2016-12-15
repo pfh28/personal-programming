@@ -26,7 +26,9 @@ mapping = {
 'Y':'Yankee',
 'Z':'Zulu'
 }
-inpt = "yes, no, maybe"
+
+inpt = "this is a test input"
+
 for char in inpt:
 	if char.isalpha():
 		print mapping[char.upper()],

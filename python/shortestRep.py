@@ -2,14 +2,11 @@
 
 
 def toLower(wordlist):
-
 	for i in range(0,len(wordlist)):
 		wordlist[i] = wordlist[i].lower()
 
 def sort_by_length(wordlist):
-	for i in range(0, len(wordlist)):
-		smallest = findSmallest(wordlist, i)
-		swap(wordlist, smallest, i)
+	wordlist.sort(key=len)
 		
 def findSmallest(wordlist, startIndex):
 	smallest = startIndex
@@ -35,27 +32,30 @@ def makePermList(word, perm):
 		makePermList(word[1:], perm+word[0])
 	
 def make_codes(wordlist):
-	dictionary
+	compressList.append("")
 	for word in wordlist:
 		makePermList(word, "")
+		while 
+			if not perm in compressList:
+				compressList.append()
 		
 	
 wordlist = [
-			"Bulbasaur", "Ivysaur", "Venusaur", "Charmander",
-			"Charmeleon", "Charizard", "Squirtle", "Wartortle",
-			"Blastoise", "Caterpie", "Metapod", "Butterfree",
-			"Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto",
-			"Pidgeot", "Rattata", "Raticate", "Spearow", "Fearow",
-			"Ekans", "Arbok", "Pikachu", "Rattata", "Raticate",
-			"Spearow", "Fearow", "Ekans", "Arbok", "Pikachu"
-			]
-			
-print wordlist
+			"Bulbasaur"]
+			#, "Ivysaur", "Venusaur", "Charmander",
+			#"Charmeleon", "Charizard", "Squirtle", "Wartortle",
+			#"Blastoise", "Caterpie", "Metapod", "Butterfree",
+			#"Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto",
+			#"Pidgeot", "Rattata", "Raticate", "Spearow", "Fearow",
+			#"Ekans", "Arbok", "Pikachu", "Rattata", "Raticate",
+			#"Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "z"
+			#]
 
 toLower(wordlist)
 wordlist = remove_duplicates(wordlist)
 sort_by_length(wordlist)
-
+make_codes(wordlist)
+print permlist
 print wordlist
 
 #make_codes(wordlist)

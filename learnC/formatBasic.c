@@ -8,7 +8,7 @@
 int getNumLines(FILE *inputFile);
 int getSpacer(FILE *inputFile, char* spacer);
 int removeLeadingSpace(FILE *inputFile, FILE* tmpFile);
-int fixSpacing(FILE *inputFile, char *spacer);
+int fixSpacing(FILE* inputFile, char* spacer, FILE* tmpFile);
 char* trimString(char* string);
 int startsWith(const char *prefix, const char *str);
 char* addSpacing(char* input, int indents, char* spacer);
@@ -17,7 +17,7 @@ int readsize = 1024;
 
 int main()
 {
-	FILE *tmpFile = fopen("tmp.txt", "w");
+	FILE *tmpFile;
 	FILE *inputFile;
 	int lines;
 	char spacer[readsize];
@@ -26,9 +26,12 @@ int main()
 	tmpFile = fopen("tmp.txt", "w");
 	
 	lines = getNumLines(inputFile);
-	getSpacer(inputFile, spacer);					//not working
+	getSpacer(inputFile, spacer);
 	removeLeadingSpace(inputFile, tmpFile);
+	//move tmpfile to input
+	//clear tmpfile
 	fixSpacing(inputFile, spacer);
+	//move tmpfile to inputfile
 	
 	fclose(inputFile);
 	
@@ -88,8 +91,11 @@ int fixSpacing(FILE *inputFile, char *spacer)
 			indents--;
 		}
 		addSpacing(tmp, trailing, spacer);
+		
+		fputs(tmp, tmpFile)
 	}
 	while(!feof(inputFile));
+	
 	
 	return 0;
 }
